@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg', 
+    'rest_framework', 
+    'rest_framework_simplejwt.token_blacklist', 
+    'token_manager', 
+    'user_manager', 
 ]
 
 MIDDLEWARE = [
@@ -48,6 +53,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication', 
+    )
+}
 
 ROOT_URLCONF = 'config.urls'
 
@@ -99,6 +110,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "user_manager.User"
+
+SIMPLE_JWT = {
+    'TOKEN_OBTAIN_SERIALIZER': 'token_manager.serialzer.CustomTokenObtainPairSerializer'
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
