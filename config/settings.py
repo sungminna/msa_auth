@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "user_manager.User"
 
 SIMPLE_JWT = {
-    'TOKEN_OBTAIN_SERIALIZER': 'token_manager.serialzer.CustomTokenObtainPairSerializer'
+    'TOKEN_OBTAIN_SERIALIZER': 'token_manager.serializer.CustomTokenObtainPairSerializer'
 }
 
 # Internationalization

@@ -16,13 +16,13 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     authentication_classes = [JWTAuthentication]
 
-    
     @action(detail=False, methods=['post'], permission_classes=[])
     def register(self, request):
-        print(request.data)
-        serializer = UserSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            user.is_active = True
+            user.save()
             refresh = CustomTokenObtainPairSerializer.get_token(user)
             return Response({
                 'user': UserSerializer(user).data, 
