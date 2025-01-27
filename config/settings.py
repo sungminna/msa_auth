@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist', 
     'token_manager', 
     'user_manager', 
+    'kakao_manager', 
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+KAKAO_REST_API_KEY = "29da5b5ee2999f173be0ce8443322289"
+KAKAO_REDIRECT_URI = "http://127.0.0.1:8000/api/kakao/callback"

@@ -42,5 +42,6 @@ urlpatterns = [
     path('api/', include([
         path('token/', include('token_manager.urls')), 
         path('users/', include('user_manager.urls')), 
+        path('kakao/', include('kakao_manager.urls')), 
     ])), 
 ]
