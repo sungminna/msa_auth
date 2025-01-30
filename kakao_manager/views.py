@@ -7,6 +7,8 @@ from django.http import HttpResponseRedirect
 from urllib.parse import urlencode
 from rest_framework import status
 import jwt
+from user_manager.utils import OAuthUserManager
+from user_manager.serializer import UserSerializer
 
 
 class KakaoAuthorizeView(APIView):
@@ -46,18 +48,26 @@ class KakaoCallbackView(APIView):
             if response.status_code == 200:
                 # Login or Create User
                 # enable id token from kakao developers(OIDC)
+                # WIP - 회원가입인지 로그인인지 파악 후 처리 필요
                 data = response.json()
-                access_token = data['access_token']
-                refresh_token = data['refresh_token']
+                kakao_access_token = data['access_token']
+                kakao_refresh_token = data['refresh_token']
                 scope = data['scope']
                 id_token = data.get('id_token')
                 user_data = jwt.decode(id_token, options={"verify_signature": False})
                 sub = user_data.get('sub')
                 kakao_email = user_data.get('email')
                 nickname = user_data.get('nickname')
-                print(sub)
 
-                return Response({'data': response}, status=response.status_code)
+                refresh, user = OAuthUserManager.create_kakao_user(sub=sub, email=kakao_email, nickname=nickname)
+                if refresh: 
+                    return Response({
+                    'user': UserSerializer(user).data, 
+                    'refresh': str(refresh), 
+                    'access': str(refresh.access_token)
+                    }, status=status.HTTP_201_CREATED)
+                else:
+                    Response({'detail': 'user creation failed' }, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({'data': response.text}, status=response.status_code)
         except Exception as e:
