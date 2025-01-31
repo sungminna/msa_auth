@@ -43,5 +43,6 @@ urlpatterns = [
         path('token/', include('token_manager.urls')), 
         path('users/', include('user_manager.urls')), 
         path('kakao/', include('kakao_manager.urls')), 
+        path('naver/', include('naver_manager.urls')), 
     ])), 
 ]

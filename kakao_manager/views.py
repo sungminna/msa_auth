@@ -56,6 +56,7 @@ class KakaoCallbackView(APIView):
                 id_token = data.get('id_token')
                 user_data = jwt.decode(id_token, options={"verify_signature": False})
                 sub = user_data.get('sub')
+                profile_image = user_data.get('profile_image')
                 kakao_email = user_data.get('email')
                 nickname = user_data.get('nickname')
                 kakao_manager = OAuthUserManager()
