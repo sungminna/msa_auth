@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
+from . models import Provider
 
 User = get_user_model()
 
@@ -35,6 +36,11 @@ class LoginSerializer(serializers.ModelSerializer):
         return attrs
 
 class KakaoUserSerializer(serializers.ModelSerializer):
+    provider = serializers.SlugRelatedField(
+        queryset=Provider.objects.all(), 
+        slug_field='name', 
+        required=False, 
+    )
     class Meta:
         model = User
         fields = ['id', 'email', 'nickname', 'password']
