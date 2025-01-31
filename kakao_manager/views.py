@@ -58,8 +58,8 @@ class KakaoCallbackView(APIView):
                 sub = user_data.get('sub')
                 kakao_email = user_data.get('email')
                 nickname = user_data.get('nickname')
-
-                refresh, user = OAuthUserManager.create_kakao_user(sub=sub, email=kakao_email, nickname=nickname)
+                kakao_manager = OAuthUserManager()
+                refresh, user = kakao_manager.create_kakao_user(sub=sub, email=kakao_email, nickname=nickname)
                 if refresh: 
                     return Response({
                     'user': UserSerializer(user).data, 
@@ -67,7 +67,7 @@ class KakaoCallbackView(APIView):
                     'access': str(refresh.access_token)
                     }, status=status.HTTP_201_CREATED)
                 else:
-                    Response({'detail': 'user creation failed' }, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'detail': 'user creation failed' }, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({'data': response.text}, status=response.status_code)
         except Exception as e:

@@ -33,4 +33,13 @@ class LoginSerializer(serializers.ModelSerializer):
                 _("credentials not provided"), code='data'
             )
         return attrs
-    
+
+class KakaoUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'nickname', 'password']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
+        return super().create(validated_data)
