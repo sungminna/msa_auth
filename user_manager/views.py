@@ -64,7 +64,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    
     @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
     def logout(self, request):
         try:
@@ -79,3 +78,8 @@ class UserViewSet(viewsets.ModelViewSet):
         user = request.user
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    def user_info(self, request):
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
